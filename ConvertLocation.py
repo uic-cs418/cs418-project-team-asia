@@ -6,20 +6,13 @@ from arcgis.geocoding import reverse_geocode
 from arcgis.geometry import Geometry
 import math
 
+pd.options.mode.chained_assignment = None
 
 def FindAdress(row):
-	
-
 	if (math.isnan(row['X Coordinate'])) or (math.isnan(row['Y Coordinate'])):
 		return None,None,None
 	else: 
-		pt = Geometry({
-		    "x": row['X Coordinate'],
-		    "y": row['Y Coordinate'],
-		    "spatialReference": {
-		        "wkid": 3435
-		    }
-		})
+		pt = Geometry({"x": row['X Coordinate'],"y": row['Y Coordinate'],"spatialReference": {"wkid": 3435}})
 		result = reverse_geocode(pt)
 		return pd.Series({
 			'Neighborhood': result['address']['Neighborhood'],
@@ -30,14 +23,14 @@ def FindAdress(row):
 
 
 
-file = ##Add the file location of the crime dataset
+file = 'crimes.csv'
 
 data = pd.read_csv(file)
 
-testData = data[0:100]#lower and upper bound of rows your are converting
+testData = data[500000:600000]#lower and upper bound of rows your are converting
 
 
-gis = GIS("https://univofillinois.maps.arcgis.com/home/index.html", "your id", "your password")
+gis = GIS("https://univofillinois.maps.arcgis.com/home/index.html", "ryousu2.uillinois", "guiliano93")
 
 
 newcolumns = testData.apply(FindAdress,axis=1)
@@ -48,6 +41,6 @@ testData['Address'] = newcolumns['Address']
 
 print(testData.shape)
 
-testData.to_csv('')#add name of outputfile. Nameformat: LowerBoundToUpperbound.csv. For example: 0To99.csv
+testData.to_csv('500000To600000.csv')#add name of outputfile. Nameformat: LowerBoundToUpperbound.csv. For example: 0To99.csv
 
 
