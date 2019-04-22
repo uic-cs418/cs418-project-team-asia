@@ -1,3 +1,6 @@
+import requests
+import json
+import pandas as pd
 from arcgis.gis import GIS
 from arcgis.geocoding import reverse_geocode
 from arcgis.geometry import Geometry
