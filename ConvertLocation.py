@@ -1,3 +1,6 @@
+import requests
+import json
+import pandas as pd
 from arcgis.gis import GIS
 from arcgis.geocoding import reverse_geocode
 from arcgis.geometry import Geometry
@@ -17,14 +20,14 @@ def FindAdress(row):
 			'Address': result})
 
 
-file = 'crimes.csv'
+file = 'Crimes_-_2001_to_present .csv'
 
 data = pd.read_csv(file)
 
-testData = data[200000:300000]#lower and upper bound of rows your are converting
+testData = data[1300001:1350001]#lower and upper bound of rows your are converting
 
 
-gis = GIS("https://univofillinois.maps.arcgis.com/home/index.html", "id", "password")
+gis = GIS("https://univofillinois.maps.arcgis.com/home/index.html", "mbist3.uillinois", "ArcGIS12123")
 
 
 newcolumns = testData.apply(FindAdress,axis=1)
@@ -35,6 +38,6 @@ testData['Address'] = newcolumns['Address']
 
 print(testData.shape)
 
-testData.to_csv('200000To300000.csv')#add name of outputfile. Nameformat: LowerBoundToUpperbound.csv. For example: 0To99.csv
+testData.to_csv('1300001To1350000.csv')#add name of outputfile. Nameformat: LowerBoundToUpperbound.csv. For example: 0To99.csv
 
 
