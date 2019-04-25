@@ -1,3 +1,6 @@
+import requests
+import json
+import pandas as pd
 from arcgis.gis import GIS
 from arcgis.geocoding import reverse_geocode
 from arcgis.geometry import Geometry
@@ -8,13 +11,24 @@ def FindAdress(row):
 	if (math.isnan(row['X Coordinate'])) or (math.isnan(row['Y Coordinate'])):
 		return None,None,None
 	else: 
-		pt = Geometry({"x": row['X Coordinate'],"y": row['Y Coordinate'],"spatialReference": {"wkid": 3435}})
-		result = reverse_geocode(pt)
-		
-		return pd.Series({
-			'Neighborhood': result['address']['Neighborhood'],
-			'Zipcode': result['address']['Postal'],
-			'Address': result})
+		pt = Geometry({
+		    "x": row['X Coordinate'],
+		    "y": row['Y Coordinate'],
+		    "spatialReference": {
+		        "wkid": 3435
+		    }
+		})
+		try:
+			result = reverse_geocode(pt)
+			return pd.Series({
+				'Neighborhood': result['address']['Neighborhood'],
+				'Zipcode': result['address']['Postal'],
+				'Address': result})
+		except:
+			return pd.Series({
+				'Neighborhood': None,
+				'Zipcode': None,
+				'Address': None})
 
 
 file = 'crimes.csv'
