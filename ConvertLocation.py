@@ -31,14 +31,14 @@ def FindAdress(row):
 				'Address': None})
 
 
-file = 'Crimes_-_2001_to_present .csv'
+file = 'Crimes.csv'
 
 data = pd.read_csv(file)
 
 testData = data[1300001:1350001]#lower and upper bound of rows your are converting
 
 
-gis = GIS("https://univofillinois.maps.arcgis.com/home/index.html", "mbist3.uillinois", "ArcGIS12123")
+gis = GIS("https://univofillinois.maps.arcgis.com/home/index.html", "username", "password")
 
 
 newcolumns = testData.apply(FindAdress,axis=1)
