@@ -31,14 +31,14 @@ def FindAdress(row):
 				'Address': None})
 
 
-file = 'crimes.csv'
+file = 'Crimes.csv'
 
 data = pd.read_csv(file)
 
-testData = data[200000:300000]#lower and upper bound of rows your are converting
+testData = data[1300001:1350001]#lower and upper bound of rows your are converting
 
 
-gis = GIS("https://univofillinois.maps.arcgis.com/home/index.html", "id", "password")
+gis = GIS("https://univofillinois.maps.arcgis.com/home/index.html", "username", "password")
 
 
 newcolumns = testData.apply(FindAdress,axis=1)
@@ -49,6 +49,6 @@ testData['Address'] = newcolumns['Address']
 
 print(testData.shape)
 
-testData.to_csv('200000To300000.csv')#add name of outputfile. Nameformat: LowerBoundToUpperbound.csv. For example: 0To99.csv
+testData.to_csv('1300001To1350000.csv')#add name of outputfile. Nameformat: LowerBoundToUpperbound.csv. For example: 0To99.csv
 
 
