@@ -12,6 +12,7 @@ def CreateCrimeNormalizedTable(file):
 
 	years = data['Year'].unique()
 	years = years.astype(int)
+	#comment
 	years = sorted(years)
 
 	groupedByYear = data.groupby('Year')
