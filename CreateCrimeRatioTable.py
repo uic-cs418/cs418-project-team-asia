@@ -1,6 +1,6 @@
 import pandas as pd
 
-file = '0To500010.csv' #location of the data file
+file = 'D:/CS 418/Project/Merged/0To2043066.csv' #location of the data file
 
 
 def CreateCrimeRatioTable(file):

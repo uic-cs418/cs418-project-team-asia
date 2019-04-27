@@ -29,7 +29,15 @@ def FindNormalizedCrimeNumber(yearData, neighbourhoods):
 	totalCount = yearData.shape[0]
 	groupedByNeighbourhood = yearData.groupby('Neighborhood')
 	maxNumber = yearData.groupby('Neighborhood').size().sort_values(ascending=False)[0]
-	minNumber = yearData.groupby('Neighborhood').size().sort_values(ascending=True)[0] 
+	minNumber = yearData.groupby('Neighborhood').size().sort_values(ascending=True)[0]
+
+	for neighbourhood in neighbourhoods:
+		try:
+			groupedByNeighbourhood.get_group(neighbourhood).size()
+		except:
+			minNumber = 0
+			break
+
 	#print(maxNumber)
 	normalized = []
 	for neighbourhood in neighbourhoods:
