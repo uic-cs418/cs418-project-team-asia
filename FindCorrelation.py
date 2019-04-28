@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from scipy.stats.stats import pearsonr
 
 CrimeData = pd.read_csv('D:/CS 418/cs418-project-team-asia/CrimeNormalized.csv', keep_default_na=False, usecols=range(1,10))
 HousePriceData =  pd.read_csv('D:/CS 418/cs418-project-team-asia/neighborByYearNormalized.csv', keep_default_na=False, usecols=range(1,9))
@@ -22,10 +23,13 @@ def FindCorrelation(CrimeData, HousePriceData):
 			x = np.asarray(NormalizedCrime)[0]
 			y = np.asarray(NormalizedHousePrice)[0]
 			y = y.astype(np.float)
-			correlation = np.corrcoef(x,y)[0, 1]
-			print(neighbourhood,correlation)
-			CorrelationArray.append([neighbourhood,correlation])
-	df = pd.DataFrame(CorrelationArray, columns = ['Neighborhood', 'Correlation'])
+			correlation,p_value = pearsonr(x,y)
+			print(neighbourhood,correlation,p_value)
+			significant = 'no'
+			if(p_value<0.1):
+				significant = 'yes'
+			CorrelationArray.append([neighbourhood,correlation,p_value,significant])
+	df = pd.DataFrame(CorrelationArray, columns = ['Neighborhood', 'Correlation','P-value','Significance'])
 
 	df.to_csv('Correlation_normalized.csv')
 
