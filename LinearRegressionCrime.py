@@ -57,19 +57,36 @@ def predictForAllNeighborhood(groupedByNeighbourhood, neighborhoods):
 		x2 = 0
 		for i in range(12,24):
 			x2 = x2+ y[i]
-		Count2019.append(x1)
-		Count2020.append(x2)
+		Count2019.append(np.asscalar(x1))
+		Count2020.append(np.asscalar(x2))
 	df = pd.DataFrame(sorted(neighborhoods),columns=['Neighborhood'])
 	df['2019'] = Count2019
 	df['2020'] = Count2020
 	return df
 
+CrimeRatioFile = 'CrimeRatio.csv'
+ratioDf = pd.read_csv(CrimeRatioFile)
 
 
 
+def FindRatio(predictedCrimeNumberDf,ratioDf):
+	Ratio2019 = []
+	Ratio2020 = []
+
+	Total2019 = predictedCrimeNumberDf['2019'].sum()
+	Total2020 = predictedCrimeNumberDf['2020'].sum()
+	#for neighborhood in predictedCrimeNumberDf['Neighborhood']:
+	Ratio2019 = predictedCrimeNumberDf['2019']/Total2019
+	Ratio2020 = predictedCrimeNumberDf['2020']/Total2020
+	print(Ratio2020)
+	ratioDf['2019'] = Ratio2019
+	ratioDf['2020'] = Ratio2020
+	ratioDf.to_csv('CrimeRatioWithPredicted.csv')
 
 
-print(predictForAllNeighborhood(groupedByNeighbourhood,neighborhoods))
+
+pred = predictForAllNeighborhood(groupedByNeighbourhood,neighborhoods)
+FindRatio(pred,ratioDf)
 
 
 
