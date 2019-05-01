@@ -3,7 +3,7 @@ import pandas as pd
 file = 'D:/CS 418/Project/Merged/0To2043066.csv' #location of the data file
 
 
-def CreateCrimeRatioTable(file):
+def CreateCrimeNormalizedTable(file):
 	data = pd.read_csv(file, keep_default_na=False)
 	data = data[data['Neighborhood'] != '']
 	neighbourhoods = data['Neighborhood'].unique()
@@ -12,6 +12,7 @@ def CreateCrimeRatioTable(file):
 
 	years = data['Year'].unique()
 	years = years.astype(int)
+	#comment
 	years = sorted(years)
 
 	groupedByYear = data.groupby('Year')
@@ -19,25 +20,36 @@ def CreateCrimeRatioTable(file):
 	df = pd.DataFrame(data=d)
 
 	for year in years:
-		ratio = FindCrimeRatio(groupedByYear.get_group(year),neighbourhoods)
-		df[year] = ratio
+		normalized = FindNormalizedCrimeNumber(groupedByYear.get_group(year),neighbourhoods)
+		df[year] = normalized
 
-	df.to_csv('ratio.csv')#location where to save
+	df.to_csv('normalized.csv')#location where to save
 	
 
-def FindCrimeRatio(yearData, neighbourhoods):
+def FindNormalizedCrimeNumber(yearData, neighbourhoods):
 	totalCount = yearData.shape[0]
 	groupedByNeighbourhood = yearData.groupby('Neighborhood')
-	ratio = []
+	maxNumber = yearData.groupby('Neighborhood').size().sort_values(ascending=False)[0]
+	minNumber = yearData.groupby('Neighborhood').size().sort_values(ascending=True)[0]
+
+	for neighbourhood in neighbourhoods:
+		try:
+			groupedByNeighbourhood.get_group(neighbourhood).size()
+		except:
+			minNumber = 0
+			break
+
+	#print(maxNumber)
+	normalized = []
 	for neighbourhood in neighbourhoods:
 		count = 0
 		try:
 			count = groupedByNeighbourhood.get_group(neighbourhood).shape[0]
 		except:
 			pass
-		ratio.append(count/totalCount)
-	return ratio
+		normalized.append((count-minNumber)/(maxNumber-minNumber))
+	return normalized
 
 
 
-CreateCrimeRatioTable(file)
+CreateCrimeNormalizedTable(file)
