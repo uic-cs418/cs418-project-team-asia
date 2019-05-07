@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 from scipy.stats.stats import pearsonr
 
-CrimeData = pd.read_csv('D:/CS 418/cs418-project-team-asia/CrimeNormalized.csv', keep_default_na=False, usecols=range(1,10))
-HousePriceData =  pd.read_csv('D:/CS 418/cs418-project-team-asia/neighborByYearNormalized.csv', keep_default_na=False, usecols=range(1,9))
+CrimeData = pd.read_csv('D:/CS 418/cs418-project-team-asia/CrimeRatioWithPredicted.csv', keep_default_na=False, usecols=range(1,12))
+HousePriceData =  pd.read_csv('D:/CS 418/cs418-project-team-asia/houseNewRatio.csv', keep_default_na=False, usecols=range(1,11))
 
 CrimedData = CrimeData.drop(columns='2011',axis=1, inplace=True)
 print(CrimeData)
@@ -31,7 +31,7 @@ def FindCorrelation(CrimeData, HousePriceData):
 			CorrelationArray.append([neighbourhood,correlation,p_value,significant])
 	df = pd.DataFrame(CorrelationArray, columns = ['Neighborhood', 'Correlation','P-value','Significance'])
 
-	df.to_csv('Correlation_normalized.csv')
+	df.to_csv('Correlation_ratio_predicted.csv')
 
 FindCorrelation(CrimeData,HousePriceData)
 
