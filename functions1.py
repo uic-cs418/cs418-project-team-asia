@@ -1,4 +1,12 @@
 #given dataframe, neighborhood name, year, return the avg ppsf for that year for that neighborhood
+import datetime
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn import linear_model
+from sklearn.metrics import mean_squared_error, r2_score
+
 def fun(df, neighborhood, year):
     cnt = 0.0
     total = 0
@@ -147,6 +155,4 @@ def housePred(df1, count):
         
     return newcount
 
-
-print('done')
 
