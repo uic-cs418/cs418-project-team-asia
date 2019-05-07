@@ -11,10 +11,10 @@ def positiveOrNegative(row):
         val = 'Negative'
     return val
 
-def PlotCorrelation(CorrelationsData,hue):
+def PlotCorrelation(CorrelationsData,hue,title):
 	CorrelationsData['PositiveOrNegative'] = CorrelationsData.apply(positiveOrNegative,axis=1)
 	X = np.arange(CorrelationsData.shape[0])
 	sns.scatterplot(x=X,y=CorrelationsData['Correlation'],hue=CorrelationsData[hue])
-	plt.title('Positive vs Negative Correlations Between Crime Ratio and House Price Ratio of Each Neighborhood(2012-2018)')
+	plt.title(title)
 	plt.xlabel('Observation Number(Neighborhoods)')
 	plt.show()
