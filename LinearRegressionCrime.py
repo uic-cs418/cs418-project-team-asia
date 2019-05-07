@@ -3,17 +3,12 @@ import numpy as np
 from sklearn import linear_model
 from sklearn.metrics import mean_squared_error, r2_score
 
-file = 'D:/CS 418/Project/Merged/0To2043066.csv'
 
-data = pd.read_csv(file, keep_default_na=False)
-data = data[data['Neighborhood'] != '']
-data = data[data['Year'] != 2011]
-data = data[data['Year'] != 2019]
-neighborhoods = data['Neighborhood'].unique()
-groupedByNeighbourhood = data.groupby('Neighborhood')
+#neighborhoods = data['Neighborhood'].unique()
+#groupedByNeighbourhood = data.groupby('Neighborhood')
 
-def predictForNeighbourhood(neighborhood):
-	EachMonthCount = getEachMonthCount(neighborhood)
+def predictForNeighbourhood(neighborhood, groupedByNeighbourhood):
+	EachMonthCount = getEachMonthCount(neighborhood,groupedByNeighbourhood)
 	x = np.arange(EachMonthCount.shape[0])
 	y = EachMonthCount['Count']
 	model = linear_model.LinearRegression()
@@ -25,7 +20,7 @@ def predictForNeighbourhood(neighborhood):
 
 
 
-def getEachMonthCount(neighborhood):
+def getEachMonthCount(neighborhood,groupedByNeighbourhood):
 	MonthCount = []
 	neighborhoodData = groupedByNeighbourhood.get_group(neighborhood)
 	neighborhoodData['Date'] = pd.to_datetime(neighborhoodData['Date'])
@@ -50,7 +45,7 @@ def predictForAllNeighborhood(groupedByNeighbourhood, neighborhoods):
 	Count2019 = []
 	Count2020 = []
 	for neighborhood in sorted(neighborhoods):
-		y = predictForNeighbourhood(neighborhood)
+		y = predictForNeighbourhood(neighborhood,groupedByNeighbourhood)
 		x1 = 0
 		for i in range(0,12):
 			x1 = x1+y[i]
@@ -69,7 +64,7 @@ ratioDf = pd.read_csv(CrimeRatioFile)
 
 
 
-def FindRatio(predictedCrimeNumberDf,ratioDf):
+def FindRatio(predictedCrimeNumberDf,ratioDf,File):
 	Ratio2019 = []
 	Ratio2020 = []
 
@@ -78,15 +73,14 @@ def FindRatio(predictedCrimeNumberDf,ratioDf):
 	#for neighborhood in predictedCrimeNumberDf['Neighborhood']:
 	Ratio2019 = predictedCrimeNumberDf['2019']/Total2019
 	Ratio2020 = predictedCrimeNumberDf['2020']/Total2020
-	print(Ratio2020)
 	ratioDf['2019'] = Ratio2019
 	ratioDf['2020'] = Ratio2020
-	ratioDf.to_csv('CrimeRatioWithPredicted.csv')
+	ratioDf.to_csv(File)
 
 
 
-pred = predictForAllNeighborhood(groupedByNeighbourhood,neighborhoods)
-FindRatio(pred,ratioDf)
+#pred = predictForAllNeighborhood(groupedByNeighbourhood,neighborhoods)
+#FindRatio(pred,ratioDf)
 
 
 
