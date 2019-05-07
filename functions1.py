@@ -94,7 +94,7 @@ def plotTogether(neigh, crime, house):
     singlerowcrime=crime[crime['Neighborhood']==neigh]
     
     fig = plt.figure()
-    ax1 = fig.add_subplot(111)
+    ax1 = fig.add_subplot(121)
     ax1.plot([2012,2013,2014,2015,2016,2017,2018], singlerowhouse.iloc[0,1:8], 'b-')
     for tl in ax1.get_yticklabels():
         tl.set_color('b')

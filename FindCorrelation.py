@@ -2,13 +2,13 @@ import pandas as pd
 import numpy as np
 from scipy.stats.stats import pearsonr
 
-CrimeData = pd.read_csv('D:/CS 418/cs418-project-team-asia/CrimeRatioWithPredicted.csv', keep_default_na=False, usecols=range(1,12))
-HousePriceData =  pd.read_csv('D:/CS 418/cs418-project-team-asia/houseNewRatio.csv', keep_default_na=False, usecols=range(1,11))
+#CrimeData = pd.read_csv('D:/CS 418/cs418-project-team-asia/CrimeRatioWithPredicted.csv', keep_default_na=False, usecols=range(1,12))
+#HousePriceData =  pd.read_csv('D:/CS 418/cs418-project-team-asia/houseNewRatio.csv', keep_default_na=False, usecols=range(1,11))
 
-CrimedData = CrimeData.drop(columns='2011',axis=1, inplace=True)
-print(CrimeData)
+#CrimedData = CrimeData.drop(columns='2011',axis=1, inplace=True)
+#print(CrimeData)
 
-def FindCorrelation(CrimeData, HousePriceData):
+def FindCorrelation(CrimeData, HousePriceData, File):
 	#print(HousePriceData['Region'])
 	#print(CrimeData['Neighborhood'])
 	CorrelationArray = []
@@ -24,15 +24,13 @@ def FindCorrelation(CrimeData, HousePriceData):
 			y = np.asarray(NormalizedHousePrice)[0]
 			y = y.astype(np.float)
 			correlation,p_value = pearsonr(x,y)
-			print(neighbourhood,correlation,p_value)
+			#print(neighbourhood,correlation,p_value)
 			significant = 'no'
 			if(p_value<0.1):
 				significant = 'yes'
 			CorrelationArray.append([neighbourhood,correlation,p_value,significant])
 	df = pd.DataFrame(CorrelationArray, columns = ['Neighborhood', 'Correlation','P-value','Significance'])
 
-	df.to_csv('Correlation_ratio_predicted.csv')
-
-FindCorrelation(CrimeData,HousePriceData)
+	df.to_csv(File)
 
 
