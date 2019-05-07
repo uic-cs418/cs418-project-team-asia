@@ -1,10 +1,7 @@
 import pandas as pd
 
-file = 'D:/CS 418/Project/Merged/0To2043066.csv' #location of the data file
-
-
-def CreateCrimeRatioTable(file):
-	data = pd.read_csv(file, keep_default_na=False)
+def CreateCrimeRatioTable(data,ratioFile,countFile):
+	#data = pd.read_csv(file, keep_default_na=False)
 	data = data[data['Neighborhood'] != '']
 	neighbourhoods = data['Neighborhood'].unique()
 	neighbourhoods = neighbourhoods.astype(str)
@@ -24,8 +21,8 @@ def CreateCrimeRatioTable(file):
 		df[year] = ratio
 		dfCount[year] = counts
 
-	#df.to_csv('ratio.csv')#location where to save
-	dfCount.to_csv('CrimeCountByYear.csv')
+	df.to_csv(ratioFile)#location where to save
+	dfCount.to_csv(countFile)
 	
 
 def FindCrimeRatio(yearData, neighbourhoods):
@@ -42,8 +39,3 @@ def FindCrimeRatio(yearData, neighbourhoods):
 		counts.append(count)
 		ratio.append(count/totalCount)
 	return ratio,counts
-
-
-
-CreateCrimeRatioTable(file)
-#CreateCrimeNumbersTable(file)
